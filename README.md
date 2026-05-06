@@ -1,139 +1,143 @@
-# Análise Orbital de Satélites Ativos
+# Orbital Analysis of Active Satellites
 
-Este repositório reúne um pipeline completo de processamento, classificação e visualização de dados orbitais utilizando a base `active_satellites.csv`. O código foi desenvolvido para organizar análises exploratórias, gerar métricas de risco, identificar anomalias, agrupar regimes orbitais e produzir visualizações destinadas a relatórios técnicos e artigos.
+This repository contains a complete pipeline for processing, classifying, and visualizing orbital data using the `active_satellites.csv` dataset. The code was developed to organize exploratory analyses, generate risk metrics, identify anomalies, group orbital regimes, and produce visualizations intended for technical reports and scientific articles.
 
-O projeto está dividido em módulos independentes, que podem ser executados separadamente ou como uma sequência integrada.
-
----
-
-## Estrutura Geral do Pipeline
-
-### Módulo 1 — Preparação do Ambiente
-- Montagem do Google Drive (para uso em Google Colab).
-- Importação das bibliotecas principais.
-- Configurações de visualização.
-- Leitura do arquivo CSV e verificação das colunas essenciais.
-- Cálculo de altitude quando necessário.
+The project is organized into independent modules, which can be executed separately or as an integrated workflow.
 
 ---
 
-### Módulo 2 — Análises Descritivas
-Abrange:
-- Classificação por país, tipo de missão e constelação.
-- Distribuição por altitude, inclinação, excentricidade, arrasto (BSTAR) e faixa orbital.
-- Geração de gráficos e tabelas em formato PNG.
+## General Pipeline Structure
+
+### Module 1 — Environment Setup
+- Google Drive mounting (for Google Colab usage).
+- Import of the main libraries.
+- Visualization settings.
+- CSV loading and verification of essential columns.
+- Altitude calculation when necessary.
 
 ---
 
-### Módulo 3 — Mapa Global por Regiões Latitudinais
-- Uso de Cartopy para plotagem global.
-- Distribuição dos satélites de acordo com faixas de latitude derivadas da inclinação orbital.
-- Representação por cores e pontos simulados.
+### Module 2 — Descriptive Analyses
+Includes:
+- Classification by country, mission type, and constellation.
+- Distribution by altitude, inclination, eccentricity, drag term (BSTAR), and orbital regime.
+- Generation of plots and tables in PNG format.
 
 ---
 
-### Módulo 4 — Classificação de Satélites Geossíncronos (GEO)
-Aplicação dos critérios tradicionais de GEO:
-- Mean Motion próximo de 1 rev/dia,
-- Inclinação inferior a 5 graus,
-- Excentricidade baixa,
-- Altitude próxima de 35.786 km.
-
-Geração de gráficos comparativos (vista geral e zoom) e exporta os satélites classificados.
+### Module 3 — Global Map by Latitudinal Regions
+- Use of Cartopy for global visualization.
+- Satellite distribution according to latitude bands derived from orbital inclination.
+- Color-based representation with simulated point distributions.
 
 ---
 
-### Módulo 5 — Agrupamento Orbital por K-Means
-- Número de clusters definido como k = 4.
-- Variáveis utilizadas: inclinação, mean motion, excentricidade e RAAN.
-- Identificação do regime predominante em cada cluster.
-- Geração de percentuais e linha de saída para LaTeX.
+### Module 4 — Geosynchronous Satellite (GEO) Classification
+Application of standard GEO criteria:
+- Mean Motion close to 1 rev/day,
+- Inclination below 5 degrees,
+- Low eccentricity,
+- Altitude near 35,786 km.
+
+This module generates comparative plots and exports the classified satellites.
 
 ---
 
-### Módulo 6 — Classificação Heurística de Risco de Reentrada
-Classificação baseada em:
-- altitude do perigeu,
-- excentricidade,
+### Module 5 — Orbital Clustering with K-Means
+- Number of clusters defined as \(k = 4\).
+- Variables used: inclination, mean motion, eccentricity, and RAAN.
+- Identification of the dominant orbital regime within each cluster.
+- Generation of percentages and LaTeX-ready output lines.
+
+---
+
+### Module 6 — Heuristic Reentry Risk Classification
+Classification based on:
+- perigee altitude,
+- eccentricity,
 - BSTAR,
 - REV_AT_EPOCH.
 
-Inclui:
-- histogramas das categorias de risco,
-- gráfico de excentricidade versus altitude em escala logarítmica,
-- exportação de tabela consolidada.
+Includes:
+- histograms of risk categories,
+- eccentricity versus altitude plots in logarithmic scale,
+- export of consolidated tables.
 
 ---
 
-### Módulo 7 — Identificação de Anomalias com IsolationForest
-- Padronização das variáveis de entrada.
-- Ajuste automático da taxa de contaminação.
-- Suporte a diferentes cenários atmosféricos (aquecimento, tempestade geomagnética e projeções futuras).
-- Geração de gráficos de distribuição dos scores e dispersões.
-- Exportação das anomalias detectadas em CSV.
+### Module 7 — Anomaly Identification with Isolation Forest
+- Standardization of input variables.
+- Automatic contamination rate adjustment.
+- Support for different atmospheric scenarios (global warming, geomagnetic storms, and future projections).
+- Generation of score distribution plots and scatter diagrams.
+- Export of detected anomalies to CSV files.
 
 ---
 
-### Módulo 8 — Pipeline Unificado de Classificação de Risco (Random Forest)
-- Construção de rótulos de risco com ruído controlado.
-- Treinamento com validação cruzada.
-- Métricas apresentadas: acurácia, F1-weighted, matriz de confusão e importância das variáveis.
-- Comparação entre três cenários: atual, aquecimento e tempestade geomagnética.
+### Module 8 — Unified Risk Classification Pipeline (Random Forest)
+- Construction of noisy risk labels with controlled perturbations.
+- Training with cross-validation.
+- Metrics reported: accuracy, weighted F1-score, confusion matrix, and feature importance.
+- Comparison among three scenarios: current conditions, global warming, and geomagnetic storm conditions.
 
 ---
 
-### Módulo 9 — Comparações Gráficas Entre Cenários
-O módulo produz:
-- gráficos de dispersão comparativa,
-- histogramas por categoria de risco,
-- curvas acumuladas (CDF) de altitude,
-- tabelas-resumo.
+### Module 9 — Graphical Comparisons Between Scenarios
+This module produces:
+- comparative scatter plots,
+- histograms by risk category,
+- cumulative altitude distribution curves (CDF),
+- summary tables.
 
 ---
 
-### Módulo 10 — Mapa de Calor Global
-- Conversão das categorias de risco em pesos numéricos.
-- Simulação de posições longitudinais.
-- Geração de mapa interativo em HTML utilizando Folium.
+### Module 10 — Global Heatmap
+- Conversion of risk categories into numerical weights.
+- Simulation of longitudinal positions.
+- Generation of an interactive HTML map using Folium.
 
 ---
 
-## Células A, B e C — Simulação de Perda de Altitude Durante Tempestades
+## Cells A, B, and C — Altitude Loss Simulation During Storm Conditions
 
-Essas células complementam o pipeline com um modelo físico simplificado para estimar a queda de altitude causada pelo aumento da densidade atmosférica durante tempestades geomagnéticas.
+These cells extend the pipeline with a simplified physical model to estimate altitude decay caused by increased atmospheric density during geomagnetic storms.
 
-### Célula A — Parametrização e Funções Auxiliares
-Responsável por:
-- selecionar satélites em órbita LEO (entre 120 e 1200 km),
-- garantir que as colunas necessárias estejam presentes,
-- configurar o período de simulação (72 horas, passo de 1 hora),
-- gerar um perfil sintético do índice Kp,
-- definir funções de densidade atmosférica e fatores de decaimento.
+### Cell A — Parameterization and Auxiliary Functions
+Responsible for:
+- selecting satellites in LEO (between 120 and 1200 km),
+- verifying the required columns,
+- defining the simulation interval (72 hours with 1-hour steps),
+- generating a synthetic Kp index profile,
+- defining atmospheric density and decay factor functions.
 
-Todo o preparo para a integração numérica é realizado nesta etapa.
-
-### Célula B — Integração Numérica da Altitude (Cenário de Tempestade)
-Realiza a simulação completa da perda de altitude:
-- integração explícita ao longo das 72 horas,
-- uso do perfil Kp para incrementar o arrasto,
-- cálculo da altitude final e da perda total por satélite.
-
-Produz:
-- estatísticas da perda,
-- séries temporais médias por banda de altitude,
-- histogramas,
-- lista dos satélites mais afetados.
-
-### Célula C — Comparação Entre Tempestade e Condições Calmas
-Executa uma segunda integração, desta vez considerando Kp constante e baixo:
-- comparação direta entre o cenário de tempestade e o cenário calmo,
-- cálculo da diferença entre as altitudes finais,
-- geração de gráficos comparativos por banda,
-- exportação de tabela consolidada.
+All preparation for numerical integration is carried out in this stage.
 
 ---
 
-## Dependências Principais
+### Cell B — Numerical Integration of Altitude (Storm Scenario)
+Performs the full altitude decay simulation:
+- explicit integration over 72 hours,
+- use of the Kp profile to increase atmospheric drag,
+- calculation of final altitude and total altitude loss per satellite.
+
+Outputs include:
+- decay statistics,
+- average time series by altitude band,
+- histograms,
+- list of the most affected satellites.
+
+---
+
+### Cell C — Comparison Between Storm and Quiet Conditions
+Performs a second integration assuming constant low Kp values:
+- direct comparison between storm and quiet scenarios,
+- calculation of differences between final altitudes,
+- generation of comparative plots by altitude band,
+- export of consolidated tables.
+
+---
+
+## Main Dependencies
 
 - Python 3.x  
 - NumPy  
@@ -144,7 +148,4 @@ Executa uma segunda integração, desta vez considerando Kp constante e baixo:
 - scikit-learn  
 - Folium  
 
-Instalação típica em Colab:
-```bash
-pip install cartopy folium
-
+This project was developed using Google Colab.
